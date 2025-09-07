@@ -11,20 +11,6 @@ export default function LandingPage() {
             <div className="flex items-center">
               <span className="text-2xl font-bold text-green-600">✱ logo</span>
             </div>
-            
-            <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-gray-600 hover:text-gray-900">Home</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">About Us</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Services</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Contact</a>
-            </nav>
-            
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-gray-900">Login</button>
-              <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
-                Sign Up
-              </button>
-            </div>
           </div>
         </div>
       </header>
@@ -45,15 +31,17 @@ export default function LandingPage() {
             </div>
             
             <div className="relative">
-              <div className="bg-pink-200 rounded-2xl h-64 lg:h-80 relative overflow-hidden">
-                {/* Abstract wave illustration */}
-                <div className="absolute bottom-0 left-0 right-0">
-                  <svg viewBox="0 0 400 100" className="w-full h-24">
-                    <path d="M0,50 Q100,20 200,50 T400,50 L400,100 L0,100 Z" fill="#10B981" opacity="0.8"/>
-                    <path d="M0,60 Q100,30 200,60 T400,60 L400,100 L0,100 Z" fill="#06B6D4" opacity="0.9"/>
-                    <path d="M0,70 Q100,40 200,70 T400,70 L400,100 L0,100 Z" fill="#3B82F6" opacity="0.7"/>
-                  </svg>
-                </div>
+              <div className="rounded-2xl h-64 lg:h-80 relative overflow-hidden shadow-lg border-4 border-white">
+                <video
+                  src="/src/assets/Waste.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  className="w-full h-full object-cover"
+                ></video>
+                
+                {/* Simple subtle overlay */}
+                <div className="absolute inset-0 ring-2 ring-green-500/20 rounded-2xl"></div>
               </div>
             </div>
           </div>
@@ -70,45 +58,45 @@ export default function LandingPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* User Card */}
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <User className="w-8 h-8 text-green-600" />
+            <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <User className="w-10 h-10 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">User</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">User</h3>
+              <p className="text-gray-600 mb-8 text-lg">
                 Access personalized waste collection schedules, manage your profile, and receive notifications for optimal service.
               </p>
-              <button className="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors">
+              <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Join as a User
               </button>
             </div>
             
             {/* Admin Card */}
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Settings className="w-8 h-8 text-blue-600" />
+            <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Settings className="w-10 h-10 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Admin</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Admin</h3>
+              <p className="text-gray-600 mb-8 text-lg">
                 Oversee operations, manage resources, and analyze data to optimize routes and improve efficiency across the platform.
               </p>
-              <button className="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors">
+              <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Access Admin Panel
               </button>
             </div>
             
             {/* Driver Card */}
-            <div className="bg-white rounded-lg p-8 text-center shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-green-600" />
+            <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Truck className="w-10 h-10 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Driver</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Driver</h3>
+              <p className="text-gray-600 mb-8 text-lg">
                 Navigate optimized routes, report collection status, and ensure timely service with our intuitive driver interface.
               </p>
-              <button className="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors">
+              <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Start Driving
               </button>
             </div>
