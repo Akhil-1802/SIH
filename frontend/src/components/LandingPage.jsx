@@ -21,14 +21,15 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Welcome to<br />
-                CleanSweep: Smart<br />
+                Welcome to<br/>
+                CleanSweep: Smart<br/>
                 Waste Solutions
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 Revolutionizing waste management with intelligent solutions for a cleaner, greener future. Discover how you fit into our efficient and sustainable ecosystem.
               </p>
             </div>
+
             
             <div className="relative">
               <div className="rounded-2xl h-64 lg:h-80 relative overflow-hidden shadow-lg border-4 border-white">
