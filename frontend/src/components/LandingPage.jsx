@@ -28,6 +28,7 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+      {/* hello  */}
 
       {/* Hero Section */}
       <section className="py-16 bg-white">
