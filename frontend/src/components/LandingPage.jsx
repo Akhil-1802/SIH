@@ -21,9 +21,11 @@ export default function LandingPage() {
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-green-600">✱ logo</span>
+              <img src="\src\assets\logoclean.png" alt="Logo" className="h-22 w-22 rounded-xl p-2 
+             transition-all duration-300 ease-in-out 
+             hover:scale-125 hover:bg-green-100 hover:shadow-lg"  />
             </div>
           </div>
         </div>
@@ -40,7 +42,7 @@ export default function LandingPage() {
                 <br />
                 CleanSweep: Smart
                 <br />
-                Waste Solutions
+                Waste Management Solutions
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 Revolutionizing waste management with intelligent solutions for
@@ -49,20 +51,34 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="relative">
-              <div className="rounded-2xl h-64 lg:h-80 relative overflow-hidden shadow-lg border-4 border-white">
-                <video
-                  src="/src/assets/Waste.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className="w-full h-full object-cover"
-                ></video>
+            <div className="relative group">
+  <div
+    className="rounded-2xl h-64 lg:h-80 relative overflow-hidden 
+               shadow-lg border-4 border-white 
+               transition-transform duration-500 ease-in-out 
+               group-hover:scale-105 group-hover:shadow-2xl group-hover:border-green-400"
+  >
+    <video
+      src="/src/assets/Waste.mp4"
+      autoPlay
+      muted
+      loop
+      className="w-full h-full object-cover 
+                 transition-all duration-500 ease-in-out
+                 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-125"
+    ></video>
 
-                {/* Simple subtle overlay */}
-                <div className="absolute inset-0 ring-2 ring-green-500/20 rounded-2xl"></div>
-              </div>
-            </div>
+    {/* Gradient overlay (only on hover) */}
+    <div
+      className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent 
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+    ></div>
+
+    {/* Subtle static green ring */}
+    <div className="absolute inset-0 ring-2 ring-green-500/20 rounded-2xl"></div>
+  </div>
+</div>
+
           </div>
         </div>
       </section>
