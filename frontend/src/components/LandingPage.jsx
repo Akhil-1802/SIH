@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User, Settings, Truck, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import PublicLoginRegistrationPage from '../pages/User/PublicLoginRegistrationPage';
 
 export default function LandingPage() {
+  const [login,setLogin] = useState(false)
+  const onclose = () =>{
+      setLogin(false)
+  }
   return (
+  
     <div className="min-h-screen bg-gray-50">
+      {
+        login &&
+        <PublicLoginRegistrationPage onClose={onclose} />
+      }
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +79,7 @@ export default function LandingPage() {
               <p className="text-gray-600 mb-8 text-lg">
                 Access personalized waste collection schedules, manage your profile, and receive notifications for optimal service.
               </p>
-              <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
+              <button onClick={() => {setLogin(true)}}  className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Join as a User
               </button>
             </div>
