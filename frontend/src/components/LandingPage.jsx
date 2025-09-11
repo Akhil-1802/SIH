@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
-import { User, Settings, Truck, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import PublicLoginRegistrationPage from '../pages/User/PublicLoginRegistrationPage';
+import React from "react";
+import {
+  User,
+  Settings,
+  Truck,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
-  const [login,setLogin] = useState(false)
-  const onclose = () =>{
-      setLogin(false)
-  }
-  return (
+  const navigate = useNavigate();
+  const handleJoinUser = () => {
+    navigate("/login");
+  };
   
+  return (
     <div className="min-h-screen bg-gray-50">
-      {
-        login &&
-        <PublicLoginRegistrationPage onClose={onclose} />
-      }
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-green-600">✱ logo</span>
+              <img src="\src\assets\logoclean.png" alt="Logo" className="h-22 w-22 rounded-xl p-2 
+             transition-all duration-300 ease-in-out 
+             hover:scale-125 hover:bg-green-100 hover:shadow-lg"  />
             </div>
           </div>
         </div>
       </header>
+      {/* hello  */}
 
       {/* Hero Section */}
       <section className="py-16 bg-white">
@@ -31,30 +38,47 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Welcome to<br/>
-                CleanSweep: Smart<br/>
-                Waste Solutions
+                Welcome to
+                <br />
+                CleanSweep: Smart
+                <br />
+                Waste Management Solutions
               </h1>
               <p className="text-lg text-gray-600 mb-8">
-                Revolutionizing waste management with intelligent solutions for a cleaner, greener future. Discover how you fit into our efficient and sustainable ecosystem.
+                Revolutionizing waste management with intelligent solutions for
+                a cleaner, greener future. Discover how you fit into our
+                efficient and sustainable ecosystem.
               </p>
             </div>
 
-            
-            <div className="relative">
-              <div className="rounded-2xl h-64 lg:h-80 relative overflow-hidden shadow-lg border-4 border-white">
-                <video
-                  src="/src/assets/Waste.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className="w-full h-full object-cover"
-                ></video>
-                
-                {/* Simple subtle overlay */}
-                <div className="absolute inset-0 ring-2 ring-green-500/20 rounded-2xl"></div>
-              </div>
-            </div>
+            <div className="relative group">
+  <div
+    className="rounded-2xl h-64 lg:h-80 relative overflow-hidden 
+               shadow-lg border-4 border-white 
+               transition-transform duration-500 ease-in-out 
+               group-hover:scale-105 group-hover:shadow-2xl group-hover:border-green-400"
+  >
+    <video
+      src="/src/assets/Waste.mp4"
+      autoPlay
+      muted
+      loop
+      className="w-full h-full object-cover 
+                 transition-all duration-500 ease-in-out
+                 group-hover:brightness-110 group-hover:contrast-110 group-hover:saturate-125"
+    ></video>
+
+    {/* Gradient overlay (only on hover) */}
+    <div
+      className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent 
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+    ></div>
+
+    {/* Subtle static green ring */}
+    <div className="absolute inset-0 ring-2 ring-green-500/20 rounded-2xl"></div>
+  </div>
+</div>
+
           </div>
         </div>
       </section>
@@ -63,49 +87,64 @@ export default function LandingPage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Path</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Choose Your Path
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Select the role that best describes you to access personalized features and contribute to a cleaner environment.
+              Select the role that best describes you to access personalized
+              features and contribute to a cleaner environment.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* User Card */}
             <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <User className="w-10 h-10 text-green-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">User</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                User
+              </h3>
               <p className="text-gray-600 mb-8 text-lg">
-                Access personalized waste collection schedules, manage your profile, and receive notifications for optimal service.
+                Access personalized waste collection schedules, manage your
+                profile, and receive notifications for optimal service.
               </p>
-              <button onClick={() => {setLogin(true)}}  className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
+              <button
+                className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg"
+                onClick={handleJoinUser}
+              >
                 Join as a User
               </button>
             </div>
-            
+
             {/* Admin Card */}
             <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
               <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Settings className="w-10 h-10 text-blue-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Admin</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                Admin
+              </h3>
               <p className="text-gray-600 mb-8 text-lg">
-                Oversee operations, manage resources, and analyze data to optimize routes and improve efficiency across the platform.
+                Oversee operations, manage resources, and analyze data to
+                optimize routes and improve efficiency across the platform.
               </p>
               <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Access Admin Panel
               </button>
             </div>
-            
+
             {/* Driver Card */}
             <div className="bg-white rounded-lg p-12 text-center shadow-sm hover:shadow-md transition-shadow">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Truck className="w-10 h-10 text-green-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Driver</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+                Driver
+              </h3>
               <p className="text-gray-600 mb-8 text-lg">
-                Navigate optimized routes, report collection status, and ensure timely service with our intuitive driver interface.
+                Navigate optimized routes, report collection status, and ensure
+                timely service with our intuitive driver interface.
               </p>
               <button className="w-full bg-green-600 text-white py-4 rounded-md hover:bg-green-700 transition-colors text-lg">
                 Start Driving
@@ -120,11 +159,17 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center">
             <div className="flex space-x-8">
-              <a href="#" className="text-gray-600 hover:text-gray-900">Company</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Support</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Resources</a>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Company
+              </a>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Support
+              </a>
+              <a href="#" className="text-gray-600 hover:text-gray-900">
+                Resources
+              </a>
             </div>
-            
+
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-gray-600">
                 <Facebook className="w-5 h-5" />

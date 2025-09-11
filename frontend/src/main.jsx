@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element :<Dashboard/>
   },
   {
-    path :'/userlogin',
+    path :'/login',
     element :<PublicLoginRegistrationPage/>
   }
 ])
