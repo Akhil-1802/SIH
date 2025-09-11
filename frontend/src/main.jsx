@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -32,26 +31,7 @@ const router = createBrowserRouter([
 ])
 
 createRoot(document.getElementById('root')).render(
-=======
-import React from "react";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./App.jsx";
-import LandingPage from "./components/LandingPage.jsx";
-import LoginPage from "./components/LoginPage.jsx";
-import RegisterPage from "./components/RegisterPage.jsx";
-
-createRoot(document.getElementById("root")).render(
->>>>>>> a0a60d5467aa39ef1aa3786ebc8361b45518868d
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </StrictMode>
 );
