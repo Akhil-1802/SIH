@@ -8,6 +8,13 @@ import DriverLoginPage from './pages/Driver/DriverLoginPage.jsx';
 import Dashboard from './pages/Driver/Dashboard.jsx';
 import PublicLoginRegistrationPage from './pages/User/PublicLoginRegistrationPage.jsx';
 
+const LoginPageWrapper = () => {
+  return <PublicLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} />;
+};
+
+const RegisterPageWrapper = () => {
+  return <PublicLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={false} />;
+};
 const router = createBrowserRouter([
   {
     path : '/',
@@ -26,7 +33,11 @@ const router = createBrowserRouter([
   },
   {
     path :'/login',
-    element :<PublicLoginRegistrationPage/>
+    element :<LoginPageWrapper/>
+  },
+  {
+    path : '/register',
+    element : <RegisterPageWrapper/>
   }
 ])
 
