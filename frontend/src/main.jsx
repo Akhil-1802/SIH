@@ -16,6 +16,15 @@ import RegisterWaste from './components/RegisterWaste.jsx';
 import Complaints from './components/Complaints.jsx';
 import Notifications from './components/Notifications.jsx';
 import Reward from './components/Rewards.jsx';
+import Training from './components/Training.jsx';
+import DriverLoginRegistrationPage from './pages/Driver/DriverLoginPage.jsx';
+const DriverLoginWrapper = () => {
+  return <DriverLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={true} />;
+};
+
+const DriverRegisterWrapper = () => {
+  return <DriverLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={false} />;
+};
 
 const LoginPageWrapper = () => {
   return <PublicLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} />;
@@ -36,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/driverlogin',
-    element: <DriverLoginPage />
+    element: <DriverLoginWrapper />
   },
   {
     path: '/driverdashboard',
@@ -50,6 +59,10 @@ const router = createBrowserRouter([
     path: '/register',
     element: <RegisterPageWrapper />
   },
+  ,{
+    path : '/driverregister',
+    element : <DriverRegisterWrapper/>
+  },
   // NESTED ROUTES FOR USER DASHBOARD
   {
     path: '/userdashboard',
@@ -62,6 +75,7 @@ const router = createBrowserRouter([
       { path: 'bioplants', element: <BioPlantEvidence /> },
       { path: 'register', element: <RegisterWaste /> },
       { path: 'training', element: <EcoWasteLearning /> },
+      {path : 'module',element:<Training/>},
       { path: 'rewards', element: <Reward /> }
       
     ]

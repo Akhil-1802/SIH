@@ -1,80 +1,100 @@
 import React from "react";
-import { ToggleLeft, Search, MessagesSquare, HelpCircle, User, Star } from "lucide-react";
+import {
+  ToggleLeft,
+  Search,
+  MessagesSquare,
+  HelpCircle,
+  User,
+  Star,
+  LogOut,
+  Truck,
+} from "lucide-react";
 import ServiceToggle from "../../components/ServiceToggle"; // Adjust path as needed
 
 const driverData = {
   name: "Alex Johnson",
   role: "Professional Courier",
-  trips: 1250,
-  earnings: 87250.75,
   rating: 4.8,
 };
 
 export default function Dashboard() {
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50">
       {/* Sidebar */}
-      <aside className="w-48 border-r bg-gray-50">
-        <div className="flex items-center p-4">
-          <span className="font-bold text-green-700 text-2xl">Logo</span>
+      <aside className="w-64 bg-green-100 border-r border-green-200 flex flex-col">
+        <div className="flex items-center px-6 py-6">
+          <Truck className="text-green-600 mr-2" size={28} />
+          <span className="font-bold text-2xl text-green-700 tracking-wide">
+            CleanSweep
+          </span>
         </div>
-        <nav>
-          <button className="w-full flex items-center px-4 py-2 mt-2 text-gray-700 hover:bg-gray-100 focus:outline-none">
-            <ToggleLeft className="mr-2 h-5 w-5" />
-            Dashboard
-          </button>
+        <nav className="flex-1">
+          <ul className="space-y-1 mt-2">
+            <li>
+              <button className="w-full flex items-center px-6 py-3 text-green-800 bg-green-200 rounded-lg font-semibold">
+                <ToggleLeft className="mr-3 h-5 w-5" />
+                Dashboard
+              </button>
+            </li>
+            {/* Add more sidebar links here if needed */}
+          </ul>
         </nav>
+        <div className="px-6 py-4 border-t border-green-200">
+          <button className="flex items-center text-red-600 hover:text-red-800 font-medium">
+            <LogOut className="mr-2 h-5 w-5" />
+            Logout
+          </button>
+        </div>
       </aside>
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-start pt-10 px-6">
+      <main className="flex-1 flex flex-col items-center pt-10 px-8">
         {/* Top Bar */}
-        <div className="flex items-center justify-end w-full mb-10">
+        <div className="flex items-center justify-between w-full max-w-5xl mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-green-700">Driver Dashboard</h1>
+            <div className="text-green-500 text-sm mt-1">
+              Welcome back, <span className="font-semibold">{driverData.name}</span>
+            </div>
+          </div>
           <div className="flex gap-3 items-center">
-            <Search className="w-5 h-5 text-gray-400" />
-            <input
-              className="border rounded-full px-3 py-1 text-sm outline-none"
-              type="text"
-              placeholder="Search dashboard..."
-            />
-            <button className="bg-green-600 text-white px-3 py-1 rounded ml-3 flex items-center">
+            <div className="relative">
+              <Search className="w-5 h-5 text-green-400 absolute left-3 top-2.5" />
+              <input
+                className="border border-green-300 rounded-full pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-green-400"
+                type="text"
+                placeholder="Search dashboard..."
+              />
+            </div>
+            <button className="bg-green-600 text-white px-3 py-2 rounded-lg flex items-center hover:bg-green-700 transition">
               <MessagesSquare className="h-4 w-4 mr-1" /> Messages
             </button>
-            <button className="bg-green-600 text-white px-3 py-1 rounded ml-1 flex items-center">
+            <button className="bg-green-600 text-white px-3 py-2 rounded-lg flex items-center hover:bg-green-700 transition">
               <HelpCircle className="h-4 w-4 mr-1" /> Help
             </button>
-            <button className="bg-green-600 text-white px-3 py-1 rounded ml-1 flex items-center">
+            <button className="bg-green-600 text-white px-3 py-2 rounded-lg flex items-center hover:bg-green-700 transition">
               <User className="h-4 w-4 mr-1" /> Profile
             </button>
           </div>
         </div>
         {/* Status Card */}
-        <ServiceToggle driver={driverData} />
+        <div className="w-full max-w-5xl mb-8">
+          <ServiceToggle driver={driverData} />
+        </div>
         {/* Driver Overview */}
-        <section className="w-80 bg-white rounded-lg shadow p-6 flex flex-col items-center">
-          <h2 className="font-semibold mb-3 text-gray-700">Driver Overview</h2>
-          <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mb-2">
-            <User className="w-8 h-8 text-gray-400" />
+        <section className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 flex flex-col items-center border border-green-100">
+          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4 shadow">
+            <User className="w-10 h-10 text-green-500" />
           </div>
-          <div className="text-center mb-2">
-            <span className="font-bold text-lg">{driverData.name}</span>
-            <div className="text-xs text-gray-500">{driverData.role}</div>
+          <div className="text-center mb-3">
+            <span className="font-bold text-2xl text-green-800">{driverData.name}</span>
+            <div className="text-sm text-green-500">{driverData.role}</div>
           </div>
-          <div className="flex items-center justify-center mb-3">
+          <div className="flex items-center justify-center mb-4">
             {[...Array(4)].map((_, i) => (
-              <Star key={i} className="h-4 w-4 text-green-500 fill-green-500" fill="currentColor" />
+              <Star key={i} className="h-5 w-5 text-yellow-400 fill-yellow-400" fill="currentColor" />
             ))}
-            <Star className="h-4 w-4 text-green-500" />
-            <span className="text-green-600 ml-2 font-bold">{driverData.rating}</span>
-          </div>
-          <div className="flex justify-between w-full text-gray-700 pt-2 border-t">
-            <div className="flex flex-col items-center">
-              <span className="font-bold">{driverData.trips}</span>
-              <span className="text-xs">Total Trips</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="font-bold">${driverData.earnings.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-              <span className="text-xs">Total Earnings</span>
-            </div>
+            <Star className="h-5 w-5 text-yellow-400" />
+            <span className="text-green-700 ml-2 font-bold">{driverData.rating}</span>
           </div>
         </section>
       </main>
