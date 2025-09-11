@@ -1,18 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { X, User, Users, Trash2 } from "lucide-react"
+import { useState } from "react";
+import { X, User, Users, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin = true }) => {
-  const [isLogin, setIsLogin] = useState(initialIsLogin)
-  const [loginMethod, setLoginMethod] = useState("aadhaar")
-  const [registrationMethod, setRegistrationMethod] = useState("aadhaar")
+const PublicLoginRegistrationPage = ({
+  isOpen,
+  onClose,
+  isLogin: initialIsLogin = true,
+}) => {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(initialIsLogin);
+  const [loginMethod, setLoginMethod] = useState("aadhaar");
+  const [registrationMethod, setRegistrationMethod] = useState("aadhaar");
 
   const [loginData, setLoginData] = useState({
     aadhaar: "",
     familyId: "",
     password: "",
-  })
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,58 +29,140 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
     familyId: "",
     phone: "",
     address: "",
-  })
+  });
 
-  const [familyMembers, setFamilyMembers] = useState([{ name: "", age: "", relation: "", aadhaar: "" }])
+  const [familyMembers, setFamilyMembers] = useState([
+    { name: "", age: "", relation: "", aadhaar: "" },
+  ]);
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault()
-    console.log("Login submitted:", { method: loginMethod, data: loginData })
-    window.location.href = '/'
-  }
+  const handleLoginSubmit = async(e) => {
+    e.preventDefault();
+    if(loginMethod == "aadhaar"){
+      console.log(loginData)
+      const response = await fetch(
+          `http://localhost:3000/user/loginAadhaar`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          }
+        );
+        if(response.ok){
+          navigate("/userdashboard")
+        }
+        else{
+          const data = await response.json()
+          console.log(data.message)
+        }
+    }
+    else {
+      
+      const response = await fetch(
+          `http://localhost:3000/user/loginFamilyID`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          }
+        );
+        if(response.ok){
+          navigate("/userdashboard")
+        }
+        else{
+          const data = await response.json()
+          console.log(data.message)
+        }
+    }
+  };
 
-  const handleRegistrationSubmit = (e) => {
-    e.preventDefault()
-    console.log("Registration submitted:", {
-      method: registrationMethod,
-      data: formData,
-      familyMembers,
-    })
-    window.location.href = '/login'
-  }
+  const handleRegistrationSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (registrationMethod == "aadhaar") {
+        const newData = { ...formData, familyMembers };
+        const response = await fetch(
+          `http://localhost:3000/user/registerAadhar`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newData),
+          }
+        );
+        if (response.ok) {
+          alert("Registered!")
+          setIsLogin(true)
+        } else {
+          const data = await response.json();
+          alert(data.message);
+        }
+      } else {
+        const newData = { ...formData, familyMembers };
+        const response = await fetch(
+          `http://localhost:3000/user/registerFamilyID`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newData),
+          }
+        );
+        if (response.ok) {
+        alert("Registered!")
+          setIsLogin(true)
+        } else {
+          const data = await response.json();
+          alert(data.message);
+        }
+      }
+    } catch (error) {}
+  };
 
   const handleLoginInputChange = (e) => {
     setLoginData({
       ...loginData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleFamilyMemberChange = (index, field, value) => {
-    const updatedMembers = [...familyMembers]
-    updatedMembers[index][field] = value
-    setFamilyMembers(updatedMembers)
-  }
+    const updatedMembers = [...familyMembers];
+    updatedMembers[index][field] = value;
+    setFamilyMembers(updatedMembers);
+  };
 
   const addFamilyMember = () => {
-    setFamilyMembers([...familyMembers, { name: "", age: "", relation: "", aadhaar: "" }])
-  }
+    setFamilyMembers([
+      ...familyMembers,
+      { name: "", age: "", relation: "", aadhaar: "" },
+    ]);
+  };
 
   const removeFamilyMember = (index) => {
     if (familyMembers.length > 1) {
-      const updatedMembers = familyMembers.filter((_, i) => i !== index)
-      setFamilyMembers(updatedMembers)
+      const updatedMembers = familyMembers.filter((_, i) => i !== index);
+      setFamilyMembers(updatedMembers);
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-white flex items-center justify-center p-4 z-50">
@@ -84,9 +172,14 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
               <User className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900">{isLogin ? "Welcome Back" : "Create Account"}</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              {isLogin ? "Welcome Back" : "Create Account"}
+            </h2>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -96,7 +189,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                isLogin ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-900"
+                isLogin
+                  ? "bg-white text-green-600 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               Login
@@ -104,7 +199,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                !isLogin ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-900"
+                !isLogin
+                  ? "bg-white text-green-600 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               Register
@@ -130,7 +227,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
                 type="button"
                 onClick={() => setLoginMethod("family")}
                 className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                  loginMethod === "family" ? "bg-green-600 text-white shadow-sm" : "text-green-700 hover:text-green-900"
+                  loginMethod === "family"
+                    ? "bg-green-600 text-white shadow-sm"
+                    : "text-green-700 hover:text-green-900"
                 }`}
               >
                 Family ID Login
@@ -139,7 +238,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
 
             {loginMethod === "aadhaar" ? (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Aadhaar Number
+                </label>
                 <input
                   type="text"
                   name="aadhaar"
@@ -153,7 +254,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Family ID</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Family ID
+                </label>
                 <input
                   type="text"
                   name="familyId"
@@ -167,7 +270,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -214,7 +319,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Full Name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -226,7 +333,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -238,7 +347,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Phone Number
+              </label>
               <input
                 type="tel"
                 name="phone"
@@ -251,7 +362,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
 
             {registrationMethod === "aadhaar" ? (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Aadhaar Number
+                </label>
                 <input
                   type="text"
                   name="aadhaar"
@@ -264,7 +377,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Family ID</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Family ID
+                </label>
                 <input
                   type="text"
                   name="familyId"
@@ -277,7 +392,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Address
+              </label>
               <textarea
                 name="address"
                 value={formData.address}
@@ -289,7 +406,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -301,7 +420,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -317,7 +438,9 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
                   <Users className="w-5 h-5 text-green-600" />
-                  <h3 className="text-lg font-medium text-gray-900">Family Members</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Family Members
+                  </h3>
                 </div>
                 <button
                   type="button"
@@ -329,9 +452,14 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
               </div>
 
               {familyMembers.map((member, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-4 mb-3 bg-gray-50">
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-lg p-4 mb-3 bg-gray-50"
+                >
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-sm font-medium text-gray-700">Member {index + 1}</h4>
+                    <h4 className="text-sm font-medium text-gray-700">
+                      Member {index + 1}
+                    </h4>
                     {familyMembers.length > 1 && (
                       <button
                         type="button"
@@ -345,21 +473,33 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Name
+                      </label>
                       <input
                         type="text"
                         value={member.name}
-                        onChange={(e) => handleFamilyMemberChange(index, "name", e.target.value)}
+                        onChange={(e) =>
+                          handleFamilyMemberChange(
+                            index,
+                            "name",
+                            e.target.value
+                          )
+                        }
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500"
                         placeholder="Full name"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Age</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Age
+                      </label>
                       <input
                         type="number"
                         value={member.age}
-                        onChange={(e) => handleFamilyMemberChange(index, "age", e.target.value)}
+                        onChange={(e) =>
+                          handleFamilyMemberChange(index, "age", e.target.value)
+                        }
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500"
                         placeholder="Age"
                         min="0"
@@ -367,10 +507,18 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Relation</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Relation
+                      </label>
                       <select
                         value={member.relation}
-                        onChange={(e) => handleFamilyMemberChange(index, "relation", e.target.value)}
+                        onChange={(e) =>
+                          handleFamilyMemberChange(
+                            index,
+                            "relation",
+                            e.target.value
+                          )
+                        }
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500"
                       >
                         <option value="">Select relation</option>
@@ -384,11 +532,19 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Aadhaar Number</label>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Aadhaar Number
+                      </label>
                       <input
                         type="text"
                         value={member.aadhaar}
-                        onChange={(e) => handleFamilyMemberChange(index, "aadhaar", e.target.value)}
+                        onChange={(e) =>
+                          handleFamilyMemberChange(
+                            index,
+                            "aadhaar",
+                            e.target.value
+                          )
+                        }
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500"
                         placeholder="12-digit Aadhaar"
                         maxLength="12"
@@ -409,7 +565,7 @@ const PublicLoginRegistrationPage = ({ isOpen, onClose, isLogin: initialIsLogin 
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PublicLoginRegistrationPage
+export default PublicLoginRegistrationPage;

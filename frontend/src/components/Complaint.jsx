@@ -1,11 +1,13 @@
 import { Bell, BookUser, MapPin, Leaf, ClipboardList, GraduationCap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Complaint() {
+       const navigate = useNavigate();
   return (
     <div className="flex min-h-screen bg-green-50">
       {/* Sidebar */}
       <aside className="w-72 bg-green-100 flex flex-col py-6 px-6 border-r">
-        <span className="font-bold text-2xl text-green-800 mb-5">EcoWaste</span>
+         <span onClick={()=>{navigate("/userdashboard")}} className="font-bold text-2xl text-green-800 mb-5 cursor-pointer">EcoWaste</span>
         <nav className="flex flex-col gap-1">
           <SidebarButton icon={<Bell className="mr-2" />} label="Notifications" />
           <SidebarButton active icon={<BookUser className="mr-2" />} label="Complaints" />
