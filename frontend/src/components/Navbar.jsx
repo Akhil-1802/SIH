@@ -1,14 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaSearch, FaBell, FaCog, FaUserShield } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaSearch, FaBell, FaCog, FaUserShield, FaGift } from 'react-icons/fa';
+import { Recycle } from 'lucide-react';
 
 export default function Navbar() {
+  const navigation = useNavigate()
   return (
     <nav className=" border-b border-green-200 bg-green-100 px-6 py-4 flex items-center justify-between">
-      <Link to="/" className="text-2xl font-extrabold text-green-700">
-        Cleansweep
-      </Link>
+      <div className="flex items-center space-x-3 cursor-pointer">
+        <div onClick={()=>{navigation('/userdashboard')}} className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+          <Recycle className="w-6 h-6 text-white" />
+        </div>
+        <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          CleanSweep
+        </span>
+      </div>
       <div className="flex items-center space-x-4">
+        {/* Reward Box */}
+        <div className="flex items-center bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-2 mr-2 shadow-sm">
+          <FaGift className="text-yellow-500 mr-2" size={20} />
+          <span className="font-semibold text-yellow-700">Rewards: 120</span>
+        </div>
         <div className="relative">
           <input
             type="text"

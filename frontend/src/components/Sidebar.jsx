@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBell, FaFileAlt, FaTruck, FaLeaf, FaClipboardList, FaBook } from 'react-icons/fa';
+import { FaBell, FaFileAlt, FaTruck, FaLeaf, FaClipboardList, FaBook, FaMapMarkedAlt, FaGift } from 'react-icons/fa';
 
 export default function Sidebar() {
   const location = useLocation();
@@ -13,6 +13,8 @@ export default function Sidebar() {
     { path: 'bioplants', label: 'Bio Plants', icon: FaLeaf },
     { path: 'register', label: 'Register Waste', icon: FaClipboardList },
     { path: 'training', label: 'Training', icon: FaBook },
+    { path: 'rewards', label: 'Rewards', icon: FaGift }, // Added Rewards link
+    { path: '/tracking', label: 'Garbage Tracking', icon: FaMapMarkedAlt }, // External link
   ];
 
   // Highlight active link based on the last segment of the path
@@ -26,7 +28,7 @@ export default function Sidebar() {
             <Link
               to={item.path}
               className={`w-full flex items-center px-4 py-2 rounded-lg font-medium transition ${
-                activeSegment === item.path
+                activeSegment === item.path.replace('/', '')
                   ? 'bg-green-200 text-green-900 font-semibold'
                   : 'text-green-700 hover:bg-green-200'
               }`}

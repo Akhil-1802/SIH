@@ -55,6 +55,7 @@ const PublicLoginRegistrationPage = ({
         }
         else{
           const data = await response.json()
+          alert(data.message)
           console.log(data.message)
         }
     }
@@ -77,6 +78,7 @@ const PublicLoginRegistrationPage = ({
         else{
           const data = await response.json()
           console.log(data.message)
+          alert(data.message)
         }
     }
   };

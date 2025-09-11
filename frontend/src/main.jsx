@@ -15,6 +15,7 @@ import BioPlantEvidence from './components/BioPlantEvidence.jsx';
 import RegisterWaste from './components/RegisterWaste.jsx';
 import Complaints from './components/Complaints.jsx';
 import Notifications from './components/Notifications.jsx';
+import Reward from './components/Rewards.jsx';
 
 const LoginPageWrapper = () => {
   return <PublicLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} />;
@@ -60,7 +61,9 @@ const router = createBrowserRouter([
       { path: 'collectors', element: <EcoWastePoints /> },
       { path: 'bioplants', element: <BioPlantEvidence /> },
       { path: 'register', element: <RegisterWaste /> },
-      { path: 'training', element: <EcoWasteLearning /> }
+      { path: 'training', element: <EcoWasteLearning /> },
+      { path: 'rewards', element: <Reward /> }
+      
     ]
   },
   // If you want to keep these as standalone pages outside dashboard, keep them here as well

@@ -278,7 +278,7 @@ const BusTrackingMap = () => {
         } else {
           const marker = L.marker([lat, lng], { icon: busIcon }).addTo(map);
           marker.bindPopup(
-            `<strong>Bus ${busId}</strong><br />Lat: ${lat.toFixed(
+            `<strong>Vehicle ${busId}</strong><br />Lat: ${lat.toFixed(
               4
             )}<br />Long: ${lng.toFixed(4)}`
           );
@@ -363,7 +363,7 @@ const BusTrackingMap = () => {
                     {selectedBus ? (
                       <div className="space-y-4">
                         <h3 className="text-lg font-semibold">
-                          Bus {selectedBus}
+                          Garbage Vehicle {selectedBus}
                         </h3>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
@@ -372,12 +372,7 @@ const BusTrackingMap = () => {
                               {formatSpeed(busLocations[selectedBus].speed)}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-sm text-gray-500">Passengers</p>
-                            <p className="font-medium">
-                              {busLocations[selectedBus].passengers}
-                            </p>
-                          </div>
+                          
                           <div>
                             <p className="text-sm text-gray-500">Next Stop</p>
                             <p className="font-medium">
