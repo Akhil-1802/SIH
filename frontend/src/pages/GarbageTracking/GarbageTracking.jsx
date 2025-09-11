@@ -306,7 +306,7 @@ const BusTrackingMap = () => {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">
-            Real-Time Bus Tracker
+            Garbage Vehicle Tracker
           </h1>
           <SearchInput onSearch={setSearchTerm} />
         </div>
@@ -319,7 +319,7 @@ const BusTrackingMap = () => {
               <div className="text-center">
                 <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
                 <p className="mt-4 text-gray-600">
-                  Connecting to the bus tracking system...
+                  Connecting to the Garbage Vehicle tracking system...
                 </p>
               </div>
             </div>
@@ -357,7 +357,7 @@ const BusTrackingMap = () => {
               <div className="w-1/3 space-y-6 ">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Bus Information</CardTitle>
+                    <CardTitle>Vehicle Information</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {selectedBus ? (
@@ -422,7 +422,7 @@ const BusTrackingMap = () => {
                       </div>
                     ) : (
                       <p className="text-gray-500">
-                        Select a bus on the map to view details
+                        Select a vehicle on the map to view details
                       </p>
                     )}
                   </CardContent>
@@ -430,7 +430,7 @@ const BusTrackingMap = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>All Buses</CardTitle>
+                    <CardTitle>All Vehicles</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
