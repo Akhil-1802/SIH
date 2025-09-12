@@ -357,95 +357,116 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-xl shadow-sm border border-green-100">
               <div className="divide-y divide-gray-200">
                 {complaint.map((c, index) => {
-  // Extract filename from photo path
-  const filename = c.photo ? c.photo.split(/[/\\]/).pop() : null;
-  // Construct image URL using only filename (assuming images are served from /uploads/)
-  const imageUrl = filename ? `http://localhost:3000/uploads/${filename}` : "/default-image.jpg";
+                  const filename = c.photo
+                    ? c.photo.split(/[/\\]/).pop()
+                    : null;
+                  const imageUrl = filename
+                    ? `http://localhost:3000/uploads/${filename}`
+                    : "/default-image.jpg";
 
-  return (
-    <div key={c._id || index} className="p-6">
-      <div className="flex items-start space-x-4">
-        {/* Complaint Image */}
-        <div className="flex-shrink-0">
-          <img
-            src={imageUrl}
-            alt={c.description || "Complaint Image"}
-            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
-          />
-        </div>
+                  // Handler for Assign button
+                  const handleAssign = async () => {
+                    try {
+                      const response = await fetch(
+                        "http://localhost:3000/user/complaint"
+                      );
+                      if (!response.ok) {
+                        throw new Error("Failed to assign complaint");
+                      }
+                      const data = await response.json();
+                      console.log("Assign response:", data);
+                      // You can add UI feedback here (toast, alert, etc.)
+                    } catch (error) {
+                      console.error("Error assigning complaint:", error);
+                      // Optionally show error to user
+                    }
+                  };
 
-        {/* Complaint Details */}
-        <div className="flex-1">
-          <div className="flex items-center space-x-4 mb-2">
-            {/* Use email or name as user */}
-            <span className="font-medium text-gray-900">
-              {c.email || c.name}
-            </span>
+                  return (
+                    <div key={c._id || index} className="p-6">
+                      <div className="flex items-start space-x-4">
+                        {/* Complaint Image */}
+                        <div className="flex-shrink-0">
+                          <img
+                            src={imageUrl}
+                            alt={c.description || "Complaint Image"}
+                            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
+                          />
+                        </div>
 
-            {/* Show location lat,lng */}
-            <span className="text-gray-600 text-xs">
-              {c.location
-                ? `(${c.location.lat.toFixed(2)}, ${c.location.lng.toFixed(2)})`
-                : "Location N/A"}
-            </span>
+                        {/* Complaint Details */}
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-4 mb-2">
+                            <span className="font-medium text-gray-900">
+                              {c.email || c.name}
+                            </span>
+                            <span className="text-gray-600 text-xs">
+                              {c.location
+                                ? `(${c.location.lat.toFixed(
+                                    2
+                                  )}, ${c.location.lng.toFixed(2)})`
+                                : "Location N/A"}
+                            </span>
+                            {c.priority && (
+                              <span
+                                className={`px-2 py-1 text-xs rounded-full ${
+                                  c.priority === "High"
+                                    ? "bg-red-100 text-red-800"
+                                    : c.priority === "Medium"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
+                                }`}
+                              >
+                                {c.priority}
+                              </span>
+                            )}
+                          </div>
 
-            {/* Priority if you have it; else remove */}
-            {c.priority && (
-              <span
-                className={`px-2 py-1 text-xs rounded-full ${
-                  c.priority === "High"
-                    ? "bg-red-100 text-red-800"
-                    : c.priority === "Medium"
-                    ? "bg-yellow-100 text-yellow-800"
-                    : "bg-green-100 text-green-800"
-                }`}
-              >
-                {c.priority}
-              </span>
-            )}
-          </div>
+                          <h4 className="font-semibold text-gray-900 mb-1">
+                            {c.description || "No description"}
+                          </h4>
 
-          {/* Issue or description */}
-          <h4 className="font-semibold text-gray-900 mb-1">
-            {c.description || "No description"}
-          </h4>
+                          <p className="text-gray-600 text-sm mb-2">
+                            {c.name || c.email}
+                          </p>
 
-          {/* Email or Name */}
-          <p className="text-gray-600 text-sm mb-2">{c.name || c.email}</p>
+                          <p className="text-sm text-gray-500">
+                            {new Date(c.createdAt).toLocaleString()}
+                          </p>
+                        </div>
 
-          {/* Format date */}
-          <p className="text-sm text-gray-500">
-            {new Date(c.createdAt).toLocaleString()}
-          </p>
-        </div>
-
-        {/* Status and Actions */}
-        <div className="flex flex-col items-end space-y-2">
-          <span
-            className={`px-3 py-1 text-sm rounded-full ${
-              c.status === "Pending"
-                ? "bg-red-100 text-red-800"
-                : c.status === "In Progress"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-green-100 text-green-800"
-            }`}
-          >
-            {c.status || "Unknown"}
-          </span>
-          <div className="flex space-x-2">
-            <button className="text-blue-600 hover:text-blue-900 text-sm">
-              View
-            </button>
-            <button className="text-green-600 hover:text-green-900 text-sm">
-              Resolve
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-})}
-
+                        {/* Status and Actions */}
+                        <div className="flex flex-col items-end space-y-2">
+                          <span
+                            className={`px-3 py-1 text-sm rounded-full ${
+                              c.status === "Pending"
+                                ? "bg-red-100 text-red-800"
+                                : c.status === "In Progress"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                            }`}
+                          >
+                            {c.status || "Unknown"}
+                          </span>
+                          <div className="flex space-x-2">
+                            <button className="text-blue-600 hover:text-blue-900 text-sm">
+                              View
+                            </button>
+                            <button className="text-green-600 hover:text-green-900 text-sm">
+                              Resolve
+                            </button>
+                            <button
+                              className="text-purple-600 hover:text-purple-900 text-sm"
+                              onClick={handleAssign}
+                            >
+                              Assign
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -220,7 +220,9 @@ export default function LandingPageModern() {
                   Monitor operations, analyze data, and optimize city-wide waste
                   management with powerful administrative tools.{" "}
                 </p>{" "}
-                <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
+                <button onClick={() => {
+                    navigate("/adminlogin");
+                  }} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300">
                   {" "}
                   Access Admin Panel{" "}
                 </button>{" "}

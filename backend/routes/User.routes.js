@@ -8,4 +8,5 @@ router.post('/loginAadhaar',loginAadharController)
 router.post('/loginFamilyID',loginFamilyIDController)
 router.post('/complaint', upload.single('photo'), complaintController);
 router.post('/registerWaste',registerWasteController)
+router.post('/complaint',)
 module.exports = router
