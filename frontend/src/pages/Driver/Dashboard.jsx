@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ToggleLeft,
   Search,
@@ -8,16 +8,164 @@ import {
   Star,
   LogOut,
   Truck,
+  BookOpen,
+  AlertTriangle,
+  Settings,
+  QrCode,
 } from "lucide-react";
 import ServiceToggle from "../../components/ServiceToggle"; // Adjust path as needed
 
+// Dummy driver data
 const driverData = {
   name: "Alex Johnson",
   role: "Professional Courier",
   rating: 4.8,
 };
 
+// Dummy training modules
+const trainingModules = [
+  {
+    id: 1,
+    title: "Waste Segregation Basics",
+    description: "Learn the fundamentals of separating biodegradable and non-biodegradable waste.",
+    completed: false,
+  },
+  {
+    id: 2,
+    title: "Safe Waste Handling",
+    description: "Understand the safety protocols for handling and transporting waste.",
+    completed: false,
+  },
+  {
+    id: 3,
+    title: "Eco-friendly Practices",
+    description: "Discover best practices for minimizing environmental impact.",
+    completed: false,
+  },
+];
+
+// Training component
+function Training() {
+  const [modules, setModules] = useState(trainingModules);
+
+  const handleComplete = (id) => {
+    setModules((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, completed: true } : m))
+    );
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto w-full">
+      <h2 className="text-2xl font-bold mb-6 text-green-700 flex items-center">
+        <BookOpen className="mr-2" /> Training Modules
+      </h2>
+      <ul className="space-y-4">
+        {modules.map((module) => (
+          <li
+            key={module.id}
+            className={`p-4 rounded-xl border ${
+              module.completed
+                ? "bg-green-50 border-green-200"
+                : "bg-white border-green-100"
+            } flex items-center justify-between`}
+          >
+            <div>
+              <div className="font-semibold text-green-800">{module.title}</div>
+              <div className="text-sm text-green-600">{module.description}</div>
+            </div>
+            <button
+              disabled={module.completed}
+              onClick={() => handleComplete(module.id)}
+              className={`ml-4 px-4 py-2 rounded-lg font-semibold ${
+                module.completed
+                  ? "bg-green-200 text-green-700 cursor-not-allowed"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+            >
+              {module.completed ? "Completed" : "Mark as Complete"}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Complaint component with QR scan simulation
+function Complaint() {
+  const [qrData, setQrData] = useState("");
+  const [complaint, setComplaint] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  // Simulate QR scan (replace with real QR scanner in production)
+  const handleScan = () => {
+    // Simulate fetching QR data
+    setQrData("QR123456 - Bin Location: Sector 21, Capacity: 80%");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setQrData("");
+      setComplaint("");
+    }, 2000);
+  };
+
+  return (
+    <div className="max-w-xl mx-auto w-full">
+      <h2 className="text-2xl font-bold mb-6 text-green-700 flex items-center">
+        <AlertTriangle className="mr-2" /> Submit Complaint
+      </h2>
+      <div className="mb-4">
+        <button
+          onClick={handleScan}
+          className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+        >
+          <QrCode className="mr-2" /> Scan QR Code
+        </button>
+        {qrData && (
+          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
+            <strong>QR Data:</strong> {qrData}
+          </div>
+        )}
+      </div>
+      {qrData && (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-green-700 font-medium mb-1">
+              Complaint Description
+            </label>
+            <textarea
+              className="w-full border border-green-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              rows={3}
+              value={complaint}
+              onChange={(e) => setComplaint(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700"
+            disabled={submitted}
+          >
+            {submitted ? "Submitting..." : "Submit Complaint"}
+          </button>
+        </form>
+      )}
+      {submitted && (
+        <div className="mt-4 text-green-700 font-semibold">
+          Complaint submitted successfully!
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState("service");
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50">
       {/* Sidebar */}
@@ -31,12 +179,44 @@ export default function Dashboard() {
         <nav className="flex-1">
           <ul className="space-y-1 mt-2">
             <li>
-              <button className="w-full flex items-center px-6 py-3 text-green-800 bg-green-200 rounded-lg font-semibold">
+              <button
+                className={`w-full flex items-center px-6 py-3 rounded-lg font-semibold ${
+                  activeTab === "service"
+                    ? "bg-green-200 text-green-800"
+                    : "text-green-700 hover:bg-green-50"
+                }`}
+                onClick={() => setActiveTab("service")}
+              >
                 <ToggleLeft className="mr-3 h-5 w-5" />
-                Dashboard
+                Service Option
               </button>
             </li>
-            {/* Add more sidebar links here if needed */}
+            <li>
+              <button
+                className={`w-full flex items-center px-6 py-3 rounded-lg font-semibold ${
+                  activeTab === "training"
+                    ? "bg-green-200 text-green-800"
+                    : "text-green-700 hover:bg-green-50"
+                }`}
+                onClick={() => setActiveTab("training")}
+              >
+                <BookOpen className="mr-3 h-5 w-5" />
+                Training
+              </button>
+            </li>
+            <li>
+              <button
+                className={`w-full flex items-center px-6 py-3 rounded-lg font-semibold ${
+                  activeTab === "complaint"
+                    ? "bg-green-200 text-green-800"
+                    : "text-green-700 hover:bg-green-50"
+                }`}
+                onClick={() => setActiveTab("complaint")}
+              >
+                <AlertTriangle className="mr-3 h-5 w-5" />
+                Complaint
+              </button>
+            </li>
           </ul>
         </nav>
         <div className="px-6 py-4 border-t border-green-200">
@@ -76,9 +256,11 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        {/* Status Card */}
+        {/* Main Section */}
         <div className="w-full max-w-5xl mb-8">
-          <ServiceToggle driver={driverData} />
+          {activeTab === "service" && <ServiceToggle driver={driverData} />}
+          {activeTab === "training" && <Training />}
+          {activeTab === "complaint" && <Complaint />}
         </div>
         {/* Driver Overview */}
         <section className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 flex flex-col items-center border border-green-100">
