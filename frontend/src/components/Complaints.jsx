@@ -1,157 +1,241 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
+import Webcam from "react-webcam";
 
-const complaints = [
-  {
-    id: 'C001',
-    title: 'Missed Collection',
-    description: 'Waste not collected for 3 days',
-    status: 'Open',
-    date: '2024-01-15',
-    priority: 'High'
-  },
-  {
-    id: 'C002',
-    title: 'Overflowing Bin',
-    description: 'Collection point bin is overflowing',
-    status: 'In Progress',
-    date: '2024-01-14',
-    priority: 'Medium'
-  },
-  {
-    id: 'C003',
-    title: 'Wrong Waste Type',
-    description: 'Non-biodegradable waste mixed with organic',
-    status: 'Resolved',
-    date: '2024-01-12',
-    priority: 'Low'
-  }
-];
+const Complaints = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [location, setLocation] = useState(null);
+  const [useCamera, setUseCamera] = useState(false);
+  const [photo, setPhoto] = useState(null);
+  const webcamRef = useRef(null);
 
-export default function Complaints() {
-  const [newComplaint, setNewComplaint] = useState({
-    title: '',
-    description: '',
-    priority: 'Medium',
-    picture: null,
-    picturePreview: null,
-  });
+  const handleCapture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setPhoto(imageSrc);
+    setUseCamera(false);
+  };
 
-  const handlePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNewComplaint((prev) => ({
-        ...prev,
-        picture: file,
-        picturePreview: URL.createObjectURL(file),
-      }));
+  const handleLocationFetch = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
     }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      () => {
+        alert("Unable to retrieve your location");
+      }
+    );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Complaint submitted successfully!');
-    setNewComplaint({ title: '', description: '', priority: 'Medium', picture: null, picturePreview: null });
-  };
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
 
-  const statusColor = {
-    'Open': 'bg-red-100 text-red-800',
-    'In Progress': 'bg-yellow-100 text-yellow-800',
-    'Resolved': 'bg-green-100 text-green-800'
-  };
+      // Append regular fields
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("description", data.description);
 
-  const priorityColor = {
-    'High': 'bg-red-600',
-    'Medium': 'bg-yellow-500',
-    'Low': 'bg-green-600'
+      // Append location as JSON string (if available)
+      if (location) {
+        formData.append("location", JSON.stringify(location));
+      }
+
+      // Append photo as file/blob if exists
+      if (photo) {
+        if (photo.startsWith("data:image")) {
+          // Convert base64 string to Blob
+          const res = await fetch(photo);
+          const blob = await res.blob();
+          formData.append("photo", blob, "photo.jpg"); // You can change filename and extension if you want
+        }
+      }
+
+      const response = await fetch("http://localhost:3000/user/complaint", {
+        method: "POST",
+        credentials: "include",
+        body: formData, // Notice no 'Content-Type' header, browser sets it automatically for multipart/form-data
+      });
+
+      if (response.ok) {
+        alert("Complaint submitted successfully!");
+        window.location.reload(); // this will refresh the page
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting complaint:", error);
+      alert("Failed to submit complaint");
+    }
   };
 
   return (
     <main className="flex-1 bg-white py-8 px-10 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-900 mb-7">Complaints</h1>
-      
-      <div className="grid lg:grid-cols-2 gap-7">
+      <h1 className="text-3xl font-bold text-gray-900 mb-7">
+        Report a Complaint
+      </h1>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-green-50 rounded-xl p-6 border border-green-100 space-y-6"
+      >
+        {/* Name */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Submit New Complaint</h2>
-          <form onSubmit={handleSubmit} className="bg-green-50 rounded-xl p-6 border border-green-100">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm mb-1">Title</label>
-              <input
-                type="text"
-                value={newComplaint.title}
-                onChange={(e) => setNewComplaint({...newComplaint, title: e.target.value})}
-                className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm mb-1">Priority</label>
-              <select
-                value={newComplaint.priority}
-                onChange={(e) => setNewComplaint({...newComplaint, priority: e.target.value})}
-                className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
-              >
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm mb-1">Description</label>
-              <textarea
-                value={newComplaint.description}
-                onChange={(e) => setNewComplaint({...newComplaint, description: e.target.value})}
-                className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
-                rows="4"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm mb-1">Picture</label>
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={handlePictureChange}
-                className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
-              />
-              {newComplaint.picturePreview && (
-                <img
-                  src={newComplaint.picturePreview}
-                  alt="Preview"
-                  className="mt-2 max-h-40 rounded-lg border"
-                />
-              )}
-              <p className="text-xs text-gray-500 mt-1">You can select a photo from your device or click one using your camera.</p>
-            </div>
-            <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold">
-              Submit Complaint
-            </button>
-          </form>
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Name
+          </label>
+          <input
+            {...register("name", { required: "Name is required" })}
+            placeholder="John Doe"
+            className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
+          />
+          {errors.name && (
+            <span className="text-sm text-red-500">{errors.name.message}</span>
+          )}
         </div>
 
+        {/* Email */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Complaints</h2>
-          <div className="space-y-4">
-            {complaints.map((complaint) => (
-              <div key={complaint.id} className="bg-green-50 border border-green-100 rounded-xl p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-900">{complaint.title}</h3>
-                  <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 rounded-full text-white text-xs font-semibold ${priorityColor[complaint.priority]}`}>
-                      {complaint.priority}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColor[complaint.status]}`}>
-                      {complaint.status}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-gray-700 text-sm mb-2">{complaint.description}</p>
-                <div className="text-xs text-gray-500">ID: {complaint.id} • {complaint.date}</div>
-              </div>
-            ))}
-          </div>
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Email
+          </label>
+          <input
+            {...register("email", { required: "Email is required" })}
+            placeholder="example@mail.com"
+            className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
+          />
+          {errors.email && (
+            <span className="text-sm text-red-500">{errors.email.message}</span>
+          )}
         </div>
-      </div>
+
+        {/* Description */}
+        <div>
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Issue Description
+          </label>
+          <textarea
+            {...register("description", {
+              required: "Description is required",
+            })}
+            placeholder="Describe the issue in detail..."
+            rows={4}
+            className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
+          />
+          {errors.description && (
+            <span className="text-sm text-red-500">
+              {errors.description.message}
+            </span>
+          )}
+        </div>
+
+        {/* Upload Photo */}
+        <div>
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Add Photo (optional)
+          </label>
+          <div className="flex flex-wrap items-center gap-4 mt-2">
+            <button
+              type="button"
+              onClick={() => setUseCamera(true)}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold"
+            >
+              📷 Use Camera
+            </button>
+            <span className="text-gray-500 text-sm">or</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onloadend = () => setPhoto(reader.result);
+                if (file) reader.readAsDataURL(file);
+              }}
+              className="text-sm file:bg-green-600 file:text-white file:rounded-lg file:px-4 file:py-2 file:mr-3 file:border-0"
+            />
+          </div>
+
+          {useCamera && (
+            <div className="mt-4 bg-green-100 rounded-xl p-4 border border-green-200">
+              <Webcam
+                ref={webcamRef}
+                audio={false}
+                screenshotFormat="image/jpeg"
+                className="rounded-lg border border-green-200 w-full max-w-md"
+              />
+              <div className="flex gap-3 mt-3">
+                <button
+                  type="button"
+                  onClick={handleCapture}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold"
+                >
+                  ✅ Capture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUseCamera(false)}
+                  className="text-gray-600 hover:text-gray-800 px-4 py-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {photo && (
+            <div className="mt-4 bg-green-100 rounded-xl p-4 border border-green-200">
+              <p className="text-sm text-gray-700 mb-2">Photo Preview:</p>
+              <img
+                src={photo}
+                alt="Preview"
+                className="w-32 h-32 rounded-lg object-cover border border-green-200"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Location */}
+        <div>
+          <label className="block text-gray-700 text-sm font-medium mb-1">
+            Location (optional)
+          </label>
+          <button
+            type="button"
+            onClick={handleLocationFetch}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold"
+          >
+            📍 Fetch Location
+          </button>
+          {location && (
+            <div className="mt-2 bg-green-100 text-green-800 text-sm px-4 py-2 rounded-lg border border-green-200">
+              Latitude: {location.lat}, Longitude: {location.lng}
+            </div>
+          )}
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-semibold text-lg"
+        >
+          🚀 Submit Complaint
+        </button>
+      </form>
     </main>
   );
-}
+};
+
+export default Complaints;

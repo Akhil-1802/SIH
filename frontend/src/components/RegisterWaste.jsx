@@ -55,15 +55,6 @@ export default function RegisterWaste() {
             <label className="block text-gray-700 text-sm mb-1">Preferred Collection Date</label>
             <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"/>
           </div>
-          <div>
-            <label className="block text-gray-700 text-sm mb-1">Waste Photo (optional)</label>
-            <div className="flex items-center gap-3">
-              <button type="button" onClick={() => fileRef.current.click()} className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition">Upload Image</button>
-              <input type="file" accept="image/*" className="hidden" ref={fileRef} onChange={handleImage} />
-              {image && <img src={image.url} alt={image.name} className="w-16 h-16 object-cover rounded border border-green-200" />}
-            </div>
-            {image && <div className="text-xs text-gray-700 mt-1">{image.name}</div>}
-          </div>
         </div>
         <label className="block text-gray-700 text-sm mb-1">Additional Notes</label>
         <textarea name="notes" value={form.notes} onChange={handleChange} placeholder="Any special instructions..." className="w-full border rounded-lg bg-green-100 px-4 py-2 mb-4 focus:outline-none focus:ring focus:ring-green-200"/>

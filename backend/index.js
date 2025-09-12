@@ -6,7 +6,8 @@ const dbConnection = require("./utils/dbConnection")
 const http = require("http");
 const { Server } = require("socket.io");
 const userRoutes = require("./routes/User.routes")
-const emailRoutes = require("./routes/email.routes")
+const emailRoutes = require("./routes/email.routes");
+const path = require("path");
 dotenv.config(); // Load environment variables
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +40,7 @@ io.on("connection", (socket) => {
 });
 app.use('/user',userRoutes)
 app.use('/worker',emailRoutes)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
