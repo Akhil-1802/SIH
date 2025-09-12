@@ -2,6 +2,38 @@ const UserModel = require("../models/User.model");
 const dbConnection = require("../utils/dbConnection");
 const path = require("path");
 const Complaint = require("../models/Complaint.model");
+function sendToAPI(pngDataURL) {
+  // Create a Blob object from the data URL
+  fetch(pngDataURL)
+    .then((res) => res.blob())
+    .then((blob) => {
+      // Create a FormData object and append the PNG image file
+      var formData = new FormData();
+      formData.append("media", blob);
+      formData.append(
+        "models",
+        "nudity-2.0,wad,offensive,text-content,face-attributes,gore,genai"
+      );
+      formData.append("api_user", "432766867");
+      formData.append("api_secret", "gqDBf6rT8vTx87g3FBqaTp3Dmim3uatc");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://api.sightengine.com/1.0/check.json", true);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          console.log(response);
+          displayOutput(response);
+        } else {
+          alert("Error occurred while uploading image.");
+        }
+      };
+      xhr.send(formData);
+    })
+    .catch((error) => {
+      console.error("Error converting image:", error);
+    });
+}
 const registerAadharController = async (req, res) => {
   try {
     await dbConnection();
@@ -72,6 +104,10 @@ const registerAadharController = async (req, res) => {
       .status(500)
       .json({ message: "Server error", error: error.message });
   }
+};
+const registerWasteController = async (req, res) => {
+  try {
+  } catch (error) {}
 };
 const registerFamilyIDController = async (req, res) => {
   try {
@@ -199,35 +235,65 @@ const loginFamilyIDController = async (req, res) => {
       .json({ message: "Server error", error: error.message });
   }
 };
+const axios = require('axios');
+const fs = require('fs');
+
+
 const complaintController = async (req, res) => {
   try {
-    console.log(req.body);
     const { name, email, description, location } = req.body;
-    let photoPath = null;
 
     if (!name || !email || !description) {
-      return res
-        .status(400)
-        .json({ message: "Name, email and description are required" });
+      return res.status(400).json({ message: "Name, email and description are required" });
     }
 
-    // If file uploaded, get its path
+    let photoPath = null;
+
+    // If a file was uploaded
     if (req.file) {
-      // save relative path or URL to DB
-      photoPath = path.join("/uploads", req.file.filename); // You can change this according to your static folder serving
+      photoPath = path.join("/uploads", req.file.filename);
+
+      // Read the file from disk (assuming multer saves it locally)
+      const filePath = path.join(__dirname, '..', 'uploads', req.file.filename);
+      const fileStream = fs.createReadStream(filePath);
+
+      // Prepare form-data for Sightengine API
+      const FormData = require('form-data');
+      const formData = new FormData();
+      formData.append('media', fileStream);
+      formData.append('models', 'nudity-2.0,wad,offensive,text-content,face-attributes,gore,genai');
+      formData.append('api_user', process.env.SIGHTENGINE_USER);   // Put your credentials in .env
+      formData.append('api_secret', process.env.SIGHTENGINE_SECRET);
+
+      // Call Sightengine API
+      const sightengineResponse = await axios.post(
+        'https://api.sightengine.com/1.0/check.json',
+        formData,
+        { headers: formData.getHeaders() }
+      );
+
+      const moderationResult = sightengineResponse.data;
+
+      // Check if nudity or other offensive content detected (example based on nudity score)
+      if (moderationResult.nudity && moderationResult.nudity.raw > 0.5) {
+        // Delete the uploaded file since it's inappropriate (optional)
+        fs.unlink(filePath, (err) => {
+          if (err) console.error('Error deleting file:', err);
+        });
+        return res.status(400).json({ message: "Uploaded image contains inappropriate content." });
+      }
     }
-    console.log(photoPath)
+
+    // Parse location if present
     let parsedLocation;
     if (location) {
       if (typeof location === "string") {
         try {
           parsedLocation = JSON.parse(location);
         } catch (err) {
-          return res
-            .status(400)
-            .json({
-              message: "Invalid location format, must be a JSON string",
-            });
+          return res.status(400).json({
+            message: "Invalid location format, must be a JSON string",
+          });
         }
       } else if (typeof location === "object") {
         parsedLocation = location;
@@ -235,25 +301,26 @@ const complaintController = async (req, res) => {
         return res.status(400).json({ message: "Invalid location type" });
       }
     }
-    // Then save the complaint:
+
+    // Save the complaint
     const complaint = new Complaint({
-      name: name,
-      email: email,
-      description: description,
+      name,
+      email,
+      description,
       location: parsedLocation,
       photo: photoPath,
     });
 
     await complaint.save();
 
-    res
-      .status(201)
-      .json({ message: "Complaint submitted successfully", complaint });
+    res.status(201).json({ message: "Complaint submitted successfully", complaint });
+
   } catch (error) {
     console.error("Error saving complaint:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 module.exports = {
   registerFamilyIDController,
@@ -261,4 +328,5 @@ module.exports = {
   loginAadharController,
   loginFamilyIDController,
   complaintController,
+  registerWasteController,
 };

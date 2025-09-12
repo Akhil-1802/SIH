@@ -23,9 +23,32 @@ export default function RegisterWaste() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    alert("Waste registered with image proof!");
+    try {
+      console.log(form)
+      const response = await fetch(
+        `http://localhost:3000/user/registerWaste`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+      if(response.ok){
+        
+        alert("Waste registered with image proof!");
+      }
+      else{
+        const data = await response.json()
+        alert(data.message)
+      }
+    } catch (error) {
+      alert("Internal Server Error")
+    }
   };
 
   return (

@@ -1,25 +1,18 @@
 import React, { useRef, useState } from "react";
 import { FaPlayCircle, FaCheckCircle } from "react-icons/fa";
+import YouTubePlayer from "../components/YouTubePlayer"; // Import your custom player here
 
 const trainingModules = [
-  {
-    id: 1,
-    title: "Introduction to EcoWaste",
-    type: "video",
-    src: "https://www.w3schools.com/html/mov_bbb.mp4",
-    duration: 60, // seconds
-    points: 10,
-  },
-  {
-    id: 2,
-    title: "Waste Segregation Basics",
-    type: "video",
-    src: "https://www.w3schools.com/html/movie.mp4",
-    duration: 90,
-    points: 15,
-  },
+  
   {
     id: 3,
+    title: "YouTube Video: EcoWaste Awareness",
+    type: "youtube",
+    videoId: "Iod1MezXudU", // Your YouTube video ID
+    points: 20,
+  },
+  {
+    id: 4,
     title: "Quiz: Test Your Knowledge",
     type: "quiz",
     points: 15,
@@ -39,13 +32,12 @@ export default function Training() {
   const [completed, setCompleted] = useState(false);
   const videoRef = useRef(null);
 
-  // Prevent skipping ahead
+  // Prevent skipping ahead (for HTML5 videos)
   const [maxPlayed, setMaxPlayed] = useState(0);
 
   const handleVideoTimeUpdate = () => {
     const video = videoRef.current;
     if (!video) return;
-    // Prevent seeking ahead
     if (video.currentTime > maxPlayed + 1) {
       video.currentTime = maxPlayed;
     } else {
@@ -65,13 +57,13 @@ export default function Training() {
     }
   };
 
+  // Mark module as watched
   const markAsWatched = (idx) => {
     if (!watched[idx]) {
       const updated = [...watched];
       updated[idx] = true;
       setWatched(updated);
       setVideoProgress(100);
-      // If last module, mark as completed
       if (idx === trainingModules.length - 1) setCompleted(true);
     }
   };
@@ -92,23 +84,19 @@ export default function Training() {
     }
   };
 
-  // Only allow going to a module if all previous are watched
+  // Only allow navigation if previous modules are watched
   const canGoToModule = (idx) => {
     if (idx === 0) return true;
     return watched.slice(0, idx).every(Boolean);
   };
 
-  // Calculate progress
-  const progress =
-    (watched.filter(Boolean).length / trainingModules.length) * 100;
+  const progress = (watched.filter(Boolean).length / trainingModules.length) * 100;
 
   return (
     <div className="max-w-3xl mx-auto mt-8 bg-white rounded-xl shadow-lg p-8">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-green-700">
-            Training Progress
-          </h2>
+          <h2 className="text-2xl font-bold text-green-700">Training Progress</h2>
           <span className="text-green-600 font-semibold">
             {watched.filter(Boolean).length}/{trainingModules.length} Completed
           </span>
@@ -122,7 +110,7 @@ export default function Training() {
       </div>
 
       <div className="flex gap-6">
-        {/* Sidebar: Chapters */}
+        {/* Sidebar */}
         <aside className="w-1/3">
           <ul className="space-y-3">
             {trainingModules.map((mod, idx) => (
@@ -144,20 +132,20 @@ export default function Training() {
                 )}
                 <span>{mod.title}</span>
                 {mod.type === "video" && (
-                  <span className="ml-auto text-xs text-green-600">
-                    {formatTime(mod.duration)}
-                  </span>
+                  <span className="ml-auto text-xs text-green-600">{formatTime(mod.duration)}</span>
                 )}
               </li>
             ))}
           </ul>
         </aside>
+
         {/* Main Content */}
         <section className="flex-1">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-green-700 mb-2">
               {trainingModules[current].title}
             </h3>
+
             {trainingModules[current].type === "video" ? (
               <div>
                 <div className="relative rounded-lg overflow-hidden mb-2">
@@ -172,10 +160,7 @@ export default function Training() {
                     onEnded={() => markAsWatched(current)}
                     className="rounded-lg border border-green-200"
                   >
-                    <source
-                      src={trainingModules[current].src}
-                      type="video/mp4"
-                    />
+                    <source src={trainingModules[current].src} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                   <span className="absolute top-2 right-3 bg-green-600 text-white text-xs px-2 py-1 rounded">
@@ -200,13 +185,44 @@ export default function Training() {
                   </button>
                   <button
                     onClick={handleNext}
-                    disabled={
-                      !watched[current] ||
-                      current === trainingModules.length - 1
-                    }
+                    disabled={!watched[current] || current === trainingModules.length - 1}
                     className={`px-4 py-2 rounded bg-green-500 text-white font-semibold ${
-                      !watched[current] ||
-                      current === trainingModules.length - 1
+                      !watched[current] || current === trainingModules.length - 1
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-green-600"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            ) : trainingModules[current].type === "youtube" ? (
+              <div>
+                <YouTubePlayer
+                  videoId={trainingModules[current].videoId}
+                  title={trainingModules[current].title}
+                  onVideoEnd={() => markAsWatched(current)}
+                />
+                {watched[current] && (
+                  <div className="mt-3 text-green-700 font-semibold">
+                    Video Completed
+                  </div>
+                )}
+                <div className="flex justify-between mt-4">
+                  <button
+                    onClick={handlePrev}
+                    disabled={current === 0}
+                    className={`px-4 py-2 rounded bg-green-200 text-green-700 font-semibold mr-2 ${
+                      current === 0 ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    disabled={!watched[current] || current === trainingModules.length - 1}
+                    className={`px-4 py-2 rounded bg-green-500 text-white font-semibold ${
+                      !watched[current] || current === trainingModules.length - 1
                         ? "opacity-50 cursor-not-allowed"
                         : "hover:bg-green-600"
                     }`}
@@ -217,10 +233,7 @@ export default function Training() {
               </div>
             ) : (
               <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-green-800">
-                <p>
-                  {/* Placeholder for quiz or other module types */}
-                  Complete the quiz to test your knowledge!
-                </p>
+                <p>Complete the quiz to test your knowledge!</p>
                 <button
                   onClick={() => {
                     markAsWatched(current);
@@ -234,6 +247,7 @@ export default function Training() {
               </div>
             )}
           </div>
+
           {completed && (
             <div className="mt-6 bg-yellow-100 border border-yellow-300 rounded-lg p-4 flex items-center">
               <FaCheckCircle className="text-yellow-500 mr-3" size={28} />

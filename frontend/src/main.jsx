@@ -17,6 +17,10 @@ import Notifications from './components/Notifications.jsx';
 import Reward from './components/Rewards.jsx';
 import Training from './components/Training.jsx';
 import DriverLoginRegistrationPage from './pages/Driver/DriverLoginPage.jsx';
+import Green from './pages/GreenGaurdian/EcoLearn.jsx';
+import AdminDashboard from './pages/Admin/AdminPage.jsx';
+import AdminLoginRegistration from './pages/Admin/AdminRegistration.jsx';
+import YouTubePlayer from '../../../../../../../AppData/Local/Microsoft/Windows/INetCache/IE/ILC1LNQK/YouTubePlayer[1].jsx';
 
 const DriverLoginWrapper = () => {
   return <DriverLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={true} />;
@@ -33,7 +37,9 @@ const LoginPageWrapper = () => {
 const RegisterPageWrapper = () => {
   return <PublicLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={false} />;
 };
-
+const AdminLoginWrapper = () => {
+  return <AdminLoginRegistration isOpen={true} onClose={() => window.history.back()} isLogin={true} />;
+};
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,6 +49,15 @@ const router = createBrowserRouter([
     path: '/tracking',
     element: <BusTrackingMap />
   },
+  {
+    path : '/admin',
+    element : <AdminDashboard />
+    
+  },{
+    path : '/adminlogin',
+    element : <AdminLoginWrapper />
+    
+  },
   {
     path: '/driverlogin',
     element: <DriverLoginWrapper />
@@ -63,6 +78,10 @@ const router = createBrowserRouter([
     path : '/driverregister',
     element : <DriverRegisterWrapper/>
   },
+  {
+    path:'/youtube',
+    element :<YouTubePlayer/>
+  },
   // NESTED ROUTES FOR USER DASHBOARD
   {
     path: '/userdashboard',
@@ -76,10 +95,14 @@ const router = createBrowserRouter([
       { path: 'register', element: <RegisterWaste /> },
       { path: 'training', element: <EcoWasteLearning /> },
       {path : 'module',element:<Training/>},
-      { path: 'rewards', element: <Reward /> }
+      { path: 'rewards', element: <Reward /> },{
+        path : 'ecolearn',
+        element : <Green/>
+      }
       
     ]
   },
+  
   
 ])
 

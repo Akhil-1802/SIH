@@ -1,11 +1,19 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBell, FaFileAlt, FaTruck, FaLeaf, FaClipboardList, FaBook, FaMapMarkedAlt, FaGift } from 'react-icons/fa';
+import {
+  FaBell,
+  FaFileAlt,
+  FaTruck,
+  FaLeaf,
+  FaClipboardList,
+  FaBook,
+  FaMapMarkedAlt,
+  FaGift
+} from 'react-icons/fa';
 
 export default function Sidebar() {
   const location = useLocation();
 
-  // Use relative paths for nested routing under /userdashboard
   const menuItems = [
     { path: 'notifications', label: 'Notifications', icon: FaBell },
     { path: 'complaints', label: 'Complaints', icon: FaFileAlt },
@@ -13,11 +21,11 @@ export default function Sidebar() {
     { path: 'bioplants', label: 'Bio Plants', icon: FaLeaf },
     { path: 'register', label: 'Register Waste', icon: FaClipboardList },
     { path: 'training', label: 'Training', icon: FaBook },
-    { path: 'rewards', label: 'Rewards', icon: FaGift }, // Added Rewards link
-    { path: '/tracking', label: 'Garbage Tracking', icon: FaMapMarkedAlt }, // External link
+    { path: 'ecolearn', label: 'EcoLearn', icon: FaLeaf }, // ✅ Added EcoLearn here
+    { path: 'rewards', label: 'Rewards', icon: FaGift },
+    { path: '/tracking', label: 'Garbage Tracking', icon: FaMapMarkedAlt },
   ];
 
-  // Highlight active link based on the last segment of the path
   const activeSegment = location.pathname.split('/')[2] || 'training';
 
   return (
