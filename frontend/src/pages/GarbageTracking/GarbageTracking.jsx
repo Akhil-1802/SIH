@@ -143,16 +143,18 @@ const BusTrackingMap = () => {
   }, [userLocation, busLocations, notificationSent]);
 
   useEffect(() => {
-    socket.current = io("http://localhost:3000");
+    socket.current = io("https://busserver-1.onrender.com");
 
     socket.current.on("connect", () => {
       console.log("Socket.IO Connected");
-      setIsLoading(false);
+      setIsLoading(false);  
     });
 
     socket.current.on("locationUpdate", (data) => {
-      const { BusNumber, lat: latitude, lng: longitude, passengers, nextStop, driver } = data;
-      updateBusInfo(BusNumber, latitude, longitude, passengers, nextStop, driver);
+      console.log("locationUpdate data:", data);
+      // Use the correct keys from your data
+      const { busId, latitude, longitude, passengers, nextStop, driver } = data;
+      updateBusInfo(busId, latitude, longitude, passengers, nextStop, driver);
     });
 
     socket.current.on("connect_error", (error) => {
@@ -166,9 +168,11 @@ const BusTrackingMap = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const location = {
+
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          console.log(location)
           setUserLocation(location);
           setMapCenter([location.lat, location.lng]);
         },
@@ -186,6 +190,10 @@ const BusTrackingMap = () => {
   }, []);
 
   const updateBusInfo = (busId, lat, lng, passengers, nextStop, driver) => {
+    const latNum = Number(lat);
+    const lngNum = Number(lng);
+    if (!isFinite(latNum) || !isFinite(lngNum)) return;
+
     const currentTime = Date.now();
     const previousLocation = previousLocations.current[busId];
 
@@ -194,19 +202,19 @@ const BusTrackingMap = () => {
       const distance = calculateDistance(
         previousLocation.lat,
         previousLocation.lng,
-        lat,
-        lng
+        latNum,
+        lngNum
       );
       const timeDiff = (currentTime - previousLocation.timestamp) / 1000;
       speed = (distance / timeDiff) * 3.6;
     }
 
-    previousLocations.current[busId] = { lat, lng, timestamp: currentTime };
+    previousLocations.current[busId] = { lat: latNum, lng: lngNum, timestamp: currentTime };
 
     setBusLocations((prevLocations) => {
       const newLocation = {
-        lat,
-        lng,
+        lat: latNum,
+        lng: lngNum,
         speed,
         passengers: driver?.seat || 0,
         nextStop: nextStop || "Unknown",
@@ -218,8 +226,8 @@ const BusTrackingMap = () => {
 
     setBusPaths((prevPaths) => {
       const newPath = prevPaths[busId]
-        ? [...prevPaths[busId], [lat, lng]]
-        : [[lat, lng]];
+        ? [...prevPaths[busId], [latNum, lngNum]]
+        : [[latNum, lngNum]];
       return { ...prevPaths, [busId]: newPath };
     });
   };
@@ -261,7 +269,8 @@ const BusTrackingMap = () => {
   const BusMarkers = ({ busLocations, busPaths }) => {
     const map = useMap();
     const busIcon = L.icon({
-      iconUrl: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRydWNrLWljb24gbHVjaWRlLXRydWNrIj48cGF0aCBkPSJNMTQgMThWNmEyIDIgMCAwIDAtMi0ySDRhMiAyIDAgMCAwLTIgMnYxMWExIDEgMCAwIDAgMSAxaDIiLz48cGF0aCBkPSJNMTUgMThIOSIvPjxwYXRoIGQ9Ik0xOSAxOGgyYTEgMSAwIDAgMCAxLTF2LTMuNjVhMSAxIDAgMCAwLS4yMi0uNjI0bC0zLjQ4LTQuMzVBMSAxIDAgMCAwIDE3LjUyIDhIMTQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjE4IiByPSIyIi8+PGNpcmNsZSBjeD0iNyIgY3k9IjE4IiByPSIyIi8+PC9zdmc+",
+      iconUrl:
+        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRydWNrLWljb24gbHVjaWRlLXRydWNrIj48cGF0aCBkPSJNMTQgMThWNmEyIDIgMCAwIDAtMi0ySDRhMiAyIDAgMCAwLTIgMnYxMWExIDEgMCAwIDAgMSAxaDIiLz48cGF0aCBkPSJNMTUgMThIOSIvPjxwYXRoIGQ9Ik0xOSAxOGgyYTEgMSAwIDAgMCAxLTF2LTMuNjVhMSAxIDAgMCAwLS4yMi0uNjI0bC0zLjQ4LTQuMzVBMSAxIDAgMCAwIDE3LjUyIDhIMTQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjE4IiByPSIyIi8+PGNpcmNsZSBjeD0iNyIgY3k9IjE4IiByPSIyIi8+PC9zdmc+",
       iconSize: [32, 32],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
@@ -269,6 +278,14 @@ const BusTrackingMap = () => {
 
     useEffect(() => {
       Object.entries(busLocations).forEach(([busId, { lat, lng }]) => {
+        if (
+          typeof lat !== "number" ||
+          typeof lng !== "number" ||
+          isNaN(lat) ||
+          isNaN(lng)
+        ) {
+          return; // Skip invalid coordinates
+        }
         if (markersRef.current[busId]) {
           markersRef.current[busId].setLatLng([lat, lng]);
         } else {
@@ -284,11 +301,36 @@ const BusTrackingMap = () => {
       });
     }, [busLocations, map, busIcon]);
 
+    // Only render polylines for valid, non-empty paths with valid coordinates
     return (
       <>
-        {Object.entries(busPaths).map(([busId, path]) => (
-          <Polyline key={busId} positions={path} color="#059669" weight={4} opacity={0.8} />
-        ))}
+        {Object.entries(busPaths).map(([busId, path]) => {
+          // Path must be an array with at least 2 valid [lat, lng] points
+          if (
+            !Array.isArray(path) ||
+            path.length < 2 ||
+            path.some(
+              (point) =>
+                !Array.isArray(point) ||
+                point.length !== 2 ||
+                typeof point[0] !== "number" ||
+                typeof point[1] !== "number" ||
+                isNaN(point[0]) ||
+                isNaN(point[1])
+            )
+          ) {
+            return null;
+          }
+          return (
+            <Polyline
+              key={busId}
+              positions={path}
+              color="#059669"
+              weight={4}
+              opacity={0.8}
+            />
+          );
+        })}
       </>
     );
   };

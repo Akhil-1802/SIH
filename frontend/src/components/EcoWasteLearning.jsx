@@ -1,5 +1,6 @@
 // EcoWasteImageLearning.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const courses = [
   {
@@ -39,6 +40,7 @@ const levelColor = {
 };
 
 export default function EcoWasteLearning() {
+  const navigate = useNavigate()
   return (
     <main className="flex-1 bg-white py-8 px-10 min-h-screen">
         <h1 className="text-3xl font-bold text-gray-900 mb-7">Training & Education</h1>
@@ -52,7 +54,7 @@ export default function EcoWasteLearning() {
               <div className="text-green-800 text-sm mb-1">{c.subtitle}</div>
               <div className="text-xs text-gray-700 mb-3">Duration: {c.duration}</div>
               <div className="text-gray-700 text-[15px] mb-4">{c.text}</div>
-              <button className="bg-green-600 hover:bg-green-700 transition text-white py-2 px-5 rounded-lg font-semibold">Start Course</button>
+              <button onClick={()=>{navigate('/userdashboard/module')}} className="bg-green-600 hover:bg-green-700 transition text-white py-2 px-5 rounded-lg font-semibold">Start Course</button>
             </div>
           ))}
         </div>
