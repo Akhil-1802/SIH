@@ -31,13 +31,26 @@ export default function Complaints() {
   const [newComplaint, setNewComplaint] = useState({
     title: '',
     description: '',
-    priority: 'Medium'
+    priority: 'Medium',
+    picture: null,
+    picturePreview: null,
   });
+
+  const handlePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewComplaint((prev) => ({
+        ...prev,
+        picture: file,
+        picturePreview: URL.createObjectURL(file),
+      }));
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Complaint submitted successfully!');
-    setNewComplaint({ title: '', description: '', priority: 'Medium' });
+    setNewComplaint({ title: '', description: '', priority: 'Medium', picture: null, picturePreview: null });
   };
 
   const statusColor = {
@@ -91,6 +104,24 @@ export default function Complaints() {
                 rows="4"
                 required
               />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm mb-1">Picture</label>
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handlePictureChange}
+                className="w-full border rounded-lg bg-green-100 px-4 py-2 focus:outline-none focus:ring focus:ring-green-200"
+              />
+              {newComplaint.picturePreview && (
+                <img
+                  src={newComplaint.picturePreview}
+                  alt="Preview"
+                  className="mt-2 max-h-40 rounded-lg border"
+                />
+              )}
+              <p className="text-xs text-gray-500 mt-1">You can select a photo from your device or click one using your camera.</p>
             </div>
             <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold">
               Submit Complaint

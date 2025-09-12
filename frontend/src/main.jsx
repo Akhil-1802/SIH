@@ -8,7 +8,6 @@ import DriverLoginPage from './pages/Driver/DriverLoginPage.jsx';
 import Dashboard from './pages/Driver/Dashboard.jsx';
 import PublicLoginRegistrationPage from './pages/User/PublicLoginRegistrationPage.jsx';
 import UserDashboard from './pages/User/UserDashboard.jsx';
-import Complaint from './components/Complaint.jsx';
 import EcoWastePoints from './components/EcoWastePoints.jsx';
 import EcoWasteLearning from './components/EcoWasteLearning.jsx';
 import BioPlantEvidence from './components/BioPlantEvidence.jsx';
@@ -18,6 +17,7 @@ import Notifications from './components/Notifications.jsx';
 import Reward from './components/Rewards.jsx';
 import Training from './components/Training.jsx';
 import DriverLoginRegistrationPage from './pages/Driver/DriverLoginPage.jsx';
+
 const DriverLoginWrapper = () => {
   return <DriverLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={true} />;
 };
@@ -80,11 +80,7 @@ const router = createBrowserRouter([
       
     ]
   },
-  // If you want to keep these as standalone pages outside dashboard, keep them here as well
-  {
-    path: '/complaint',
-    element: <Complaint />
-  }
+  
 ])
 
 createRoot(document.getElementById('root')).render(
