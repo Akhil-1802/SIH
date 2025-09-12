@@ -251,7 +251,7 @@ const BusTrackingMap = () => {
   const sendNotification = async () => {
     try {
       console.log("Sending email notification...");
-      const response = await fetch("http://localhost:3000/sendConfirmationEmail/alert", {
+      const response = await fetch("http://localhost:3000/worker/sendConfirmationEmail/alert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
