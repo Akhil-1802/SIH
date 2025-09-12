@@ -20,7 +20,6 @@ import DriverLoginRegistrationPage from './pages/Driver/DriverLoginPage.jsx';
 import Green from './pages/GreenGaurdian/EcoLearn.jsx';
 import AdminDashboard from './pages/Admin/AdminPage.jsx';
 import AdminLoginRegistration from './pages/Admin/AdminRegistration.jsx';
-import YouTubePlayer from '../../../../../../../AppData/Local/Microsoft/Windows/INetCache/IE/ILC1LNQK/YouTubePlayer[1].jsx';
 
 const DriverLoginWrapper = () => {
   return <DriverLoginRegistrationPage isOpen={true} onClose={() => window.history.back()} isLogin={true} />;
@@ -77,10 +76,6 @@ const router = createBrowserRouter([
   ,{
     path : '/driverregister',
     element : <DriverRegisterWrapper/>
-  },
-  {
-    path:'/youtube',
-    element :<YouTubePlayer/>
   },
   // NESTED ROUTES FOR USER DASHBOARD
   {
