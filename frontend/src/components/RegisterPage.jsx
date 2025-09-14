@@ -29,26 +29,22 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br px-2">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br px-4 sm:px-6 lg:px-8 py-8">
       <form
-        className="bg-white rounded-2xl shadow-lg max-w-2xl w-full p-6 sm:p-10 border-2 border-green-200"
+        className="bg-white rounded-2xl shadow-lg max-w-2xl w-full p-4 sm:p-6 lg:p-10 border-2 border-green-200"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-3xl font-bold mb-6 text-green-700 border-b-2 border-green-200 pb-2 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-green-700 border-b-2 border-green-200 pb-2 text-center">
           Registration
         </h2>
         {/* Grid layout for fields */}
-        <div
-          className={`grid ${
-            isSmallScreen ? "grid-cols-1" : "grid-cols-2"
-          } gap-5`}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           <div>
-            <label className="block font-semibold mb-1" htmlFor="fullName">
+            <label className="block font-semibold mb-1 text-sm sm:text-base" htmlFor="fullName">
               Full Name
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
               type="text"
               name="fullName"
               id="fullName"
@@ -59,11 +55,11 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="block font-semibold mb-1" htmlFor="username">
+            <label className="block font-semibold mb-1 text-sm sm:text-base" htmlFor="username">
               Username
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
               type="text"
               name="username"
               id="username"
@@ -74,12 +70,12 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="block font-semibold mb-1" htmlFor="Aadhar number">
+            <label className="block font-semibold mb-1 text-sm sm:text-base" htmlFor="Aadhar number">
               Aadhar number
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
-              type="Aadhar number"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
+              type="text"
               name="Aadhar number"
               id="Aadhar number"
               placeholder="Enter your Aadhar number"
@@ -89,11 +85,11 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="block font-semibold mb-1" htmlFor="phone">
+            <label className="block font-semibold mb-1 text-sm sm:text-base" htmlFor="phone">
               Phone Number
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
               type="tel"
               name="phone"
               id="phone"
@@ -104,11 +100,11 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="block font-semibold mb-1" htmlFor="password">
+            <label className="block font-semibold mb-1 text-sm sm:text-base" htmlFor="password">
               Password
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
               type="password"
               name="password"
               id="password"
@@ -120,13 +116,13 @@ export default function RegisterPage() {
           </div>
           <div>
             <label
-              className="block font-semibold mb-1"
+              className="block font-semibold mb-1 text-sm sm:text-base"
               htmlFor="confirmPassword"
             >
               Confirm Password
             </label>
             <input
-              className="w-full border border-green-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50"
+              className="w-full border border-green-300 rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 focus:ring-green-400 bg-green-50 text-sm sm:text-base"
               type="password"
               name="confirmPassword"
               id="confirmPassword"
@@ -138,11 +134,11 @@ export default function RegisterPage() {
           </div>
         </div>
         {/* Gender Radios */}
-        <div className="mt-6">
-          <label className="font-semibold mb-2 block text-green-700">
+        <div className="mt-4 sm:mt-6">
+          <label className="font-semibold mb-2 block text-green-700 text-sm sm:text-base">
             Gender
           </label>
-          <div className="flex gap-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
             <label className="flex items-center gap-2">
               <input
                 type="radio"
@@ -152,7 +148,7 @@ export default function RegisterPage() {
                 onChange={(e) => setGender(e.target.value)}
                 className="accent-green-500"
               />
-              <span className="text-green-700">Male</span>
+              <span className="text-green-700 text-sm sm:text-base">Male</span>
             </label>
             <label className="flex items-center gap-2">
               <input
@@ -163,7 +159,7 @@ export default function RegisterPage() {
                 onChange={(e) => setGender(e.target.value)}
                 className="accent-green-500"
               />
-              <span className="text-green-700">Female</span>
+              <span className="text-green-700 text-sm sm:text-base">Female</span>
             </label>
             <label className="flex items-center gap-2">
               <input
@@ -174,13 +170,13 @@ export default function RegisterPage() {
                 onChange={(e) => setGender(e.target.value)}
                 className="accent-green-500"
               />
-              <span className="text-green-700">Prefer not to say</span>
+              <span className="text-green-700 text-sm sm:text-base">Prefer not to say</span>
             </label>
           </div>
         </div>
         <button
           type="submit"
-          className="mt-8 w-full py-3 rounded-md font-semibold bg-gradient-to-r bg-green-600 text-white text-lg shadow-md hover:opacity-90 transition"
+          className="mt-6 sm:mt-8 w-full py-3 sm:py-4 rounded-md font-semibold bg-gradient-to-r bg-green-600 text-white text-base sm:text-lg shadow-md hover:opacity-90 transition"
         >
           Register
         </button>

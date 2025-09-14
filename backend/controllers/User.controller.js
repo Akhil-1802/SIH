@@ -320,13 +320,41 @@ const complaintController = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+const ComplaintModel = require("../models/Complaint.model");
 
+const issueComplaintController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id)
+
+    // Update the complaint's issue field to "Assigned"
+    const updatedComplaint = await ComplaintModel.findByIdAndUpdate(
+      id,
+      { issue: 'Assigned' },
+      { new: true }
+    );
+
+    if (!updatedComplaint) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+    res.status(200).json({
+      message: 'Complaint assigned successfully',
+      complaint: updatedComplaint
+    });
+  } catch (error) {
+    console.error('Error assigning complaint:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 module.exports = {
+issueComplaintController,
   registerFamilyIDController,
   registerAadharController,
   loginAadharController,
   loginFamilyIDController,
   complaintController,
   registerWasteController,
+  issueComplaintController
 };

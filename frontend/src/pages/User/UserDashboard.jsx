@@ -9,9 +9,9 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-green-50">
       <Navbar />
-      <div className="flex">
+      <div className="flex relative">
         <Sidebar />
-        <div className="flex-1 p-6">
+        <div className="flex-1 w-full lg:w-auto p-3 sm:p-4 lg:p-6 ml-0 lg:ml-0">
           <Outlet /> {/* This will render the nested route's component */}
         </div>
       </div>

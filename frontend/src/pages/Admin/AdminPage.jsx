@@ -59,64 +59,64 @@ export default function AdminDashboard() {
         return (
           <div className="space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-green-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-green-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Total Users</p>
-                    <p className="text-3xl font-bold text-green-600">1,247</p>
-                    <p className="text-sm text-green-500">+12% this month</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Total Users</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-green-600">1,247</p>
+                    <p className="text-xs sm:text-sm text-green-500">+12% this month</p>
                   </div>
-                  <Users className="w-12 h-12 text-green-600" />
+                  <Users className="w-8 h-8 sm:w-12 sm:h-12 text-green-600" />
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-green-100">
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-green-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Active Vehicles</p>
-                    <p className="text-3xl font-bold text-blue-600">89/95</p>
-                    <p className="text-sm text-blue-500">94% operational</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Active Vehicles</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">89/95</p>
+                    <p className="text-xs sm:text-sm text-blue-500">94% operational</p>
                   </div>
-                  <Truck className="w-12 h-12 text-blue-600" />
+                  <Truck className="w-8 h-8 sm:w-12 sm:h-12 text-blue-600" />
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-green-100">
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-green-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Waste Collected</p>
-                    <p className="text-3xl font-bold text-purple-600">2.4T</p>
-                    <p className="text-sm text-purple-500">Today</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Waste Collected</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-purple-600">2.4T</p>
+                    <p className="text-xs sm:text-sm text-purple-500">Today</p>
                   </div>
-                  <Trash2 className="w-12 h-12 text-purple-600" />
+                  <Trash2 className="w-8 h-8 sm:w-12 sm:h-12 text-purple-600" />
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-green-100">
+              <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-green-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Pending Complaints</p>
-                    <p className="text-3xl font-bold text-red-600">23</p>
-                    <p className="text-sm text-red-500">Needs attention</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Pending Complaints</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-red-600">23</p>
+                    <p className="text-xs sm:text-sm text-red-500">Needs attention</p>
                   </div>
-                  <AlertTriangle className="w-12 h-12 text-red-600" />
+                  <AlertTriangle className="w-8 h-8 sm:w-12 sm:h-12 text-red-600" />
                 </div>
               </div>
             </div>
 
             {/* Create Activity - Full Width */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-green-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-green-100">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
                 Create Activity
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <input
                   type="text"
                   placeholder="Activity title..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm sm:text-base"
                 />
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm sm:text-base">
                   <option>Type Of Activity</option>
                   <option>Call</option>
                   <option>Video Call</option>
@@ -126,9 +126,9 @@ export default function AdminDashboard() {
                 <textarea
                   placeholder="Activity description..."
                   rows="3"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 md:col-span-1"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 sm:col-span-1 text-sm sm:text-base"
                 ></textarea>
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <select className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm sm:text-base">
                   <option>Assign to</option>
                   <option>All Drivers</option>
                   <option>Driver John (V-001)</option>
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
                 </select>
               </div>
               <div className="mt-4">
-                <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                <button className="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold text-sm sm:text-base">
                   Create Activity
                 </button>
               </div>
@@ -311,46 +311,46 @@ export default function AdminDashboard() {
               Complaint Management
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
               <div
                 onClick={() => setSelectedStatus("All Status")}
-                className={`rounded-xl p-4 shadow-sm border text-center cursor-pointer transition-all ${
+                className={`rounded-xl p-3 sm:p-4 shadow-sm border text-center cursor-pointer transition-all ${
                   selectedStatus === "All Status"
                     ? "border-blue-300 bg-blue-50"
                     : "border-green-100 bg-white hover:bg-gray-50"
                 }`}
               >
-                <div className=" text-gray-600 text-base">All Complaints</div>
+                <div className="text-gray-600 text-sm sm:text-base">All Complaints</div>
               </div>
               <div
                 onClick={() => setSelectedStatus("Pending")}
-                className={`rounded-xl p-4 shadow-sm border text-center cursor-pointer transition-all ${
+                className={`rounded-xl p-3 sm:p-4 shadow-sm border text-center cursor-pointer transition-all ${
                   selectedStatus === "Pending"
                     ? "border-red-300 bg-red-50"
                     : "border-green-100 bg-white hover:bg-gray-50"
                 }`}
               >
-                <div className="text-base text-gray-600">Pending</div>
+                <div className="text-sm sm:text-base text-gray-600">Pending</div>
               </div>
               <div
                 onClick={() => setSelectedStatus("In Progress")}
-                className={`rounded-xl p-4 shadow-sm border text-center cursor-pointer transition-all ${
+                className={`rounded-xl p-3 sm:p-4 shadow-sm border text-center cursor-pointer transition-all ${
                   selectedStatus === "In Progress"
                     ? "border-yellow-300 bg-yellow-50"
                     : "border-green-100 bg-white hover:bg-gray-50"
                 }`}
               >
-                <div className="text-base text-gray-600">In Progress</div>
+                <div className="text-sm sm:text-base text-gray-600">In Progress</div>
               </div>
               <div
                 onClick={() => setSelectedStatus("Resolved")}
-                className={`rounded-xl p-4 shadow-sm border text-center cursor-pointer transition-all ${
+                className={`rounded-xl p-3 sm:p-4 shadow-sm border text-center cursor-pointer transition-all ${
                   selectedStatus === "Resolved"
                     ? "border-green-300 bg-green-50"
                     : "border-green-100 bg-white hover:bg-gray-50"
                 }`}
               >
-                <div className="text-base text-gray-600">Resolved</div>
+                <div className="text-sm sm:text-base text-gray-600">Resolved</div>
               </div>
             </div>
 
@@ -368,11 +368,18 @@ export default function AdminDashboard() {
                   const handleAssign = async () => {
                     try {
                       const response = await fetch(
-                        "http://localhost:3000/user/complaint"
+                        `http://localhost:3000/user/complaint/${c._id}`,
+                        {
+                          method:"PUT",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                        }
                       );
                       if (!response.ok) {
                         throw new Error("Failed to assign complaint");
                       }
+                      alert("Assigned Successfully!")
                       const data = await response.json();
                       console.log("Assign response:", data);
                       // You can add UI feedback here (toast, alert, etc.)
@@ -383,21 +390,21 @@ export default function AdminDashboard() {
                   };
 
                   return (
-                    <div key={c._id || index} className="p-6">
-                      <div className="flex items-start space-x-4">
+                    <div key={c._id || index} className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
                         {/* Complaint Image */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 self-center sm:self-start">
                           <img
                             src={imageUrl}
                             alt={c.description || "Complaint Image"}
-                            className="w-16 h-16 rounded-lg object-cover border border-gray-200"
+                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover border border-gray-200"
                           />
                         </div>
 
                         {/* Complaint Details */}
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-4 mb-2">
-                            <span className="font-medium text-gray-900">
+                        <div className="flex-1 w-full">
+                          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mb-2">
+                            <span className="font-medium text-gray-900 text-sm sm:text-base">
                               {c.email || c.name}
                             </span>
                             <span className="text-gray-600 text-xs">
@@ -409,7 +416,7 @@ export default function AdminDashboard() {
                             </span>
                             {c.priority && (
                               <span
-                                className={`px-2 py-1 text-xs rounded-full ${
+                                className={`px-2 py-1 text-xs rounded-full self-start ${
                                   c.priority === "High"
                                     ? "bg-red-100 text-red-800"
                                     : c.priority === "Medium"
@@ -422,23 +429,23 @@ export default function AdminDashboard() {
                             )}
                           </div>
 
-                          <h4 className="font-semibold text-gray-900 mb-1">
+                          <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                             {c.description || "No description"}
                           </h4>
 
-                          <p className="text-gray-600 text-sm mb-2">
+                          <p className="text-gray-600 text-xs sm:text-sm mb-2">
                             {c.name || c.email}
                           </p>
 
-                          <p className="text-sm text-gray-500">
+                          <p className="text-xs sm:text-sm text-gray-500">
                             {new Date(c.createdAt).toLocaleString()}
                           </p>
                         </div>
 
                         {/* Status and Actions */}
-                        <div className="flex flex-col items-end space-y-2">
+                        <div className="flex flex-row sm:flex-col items-center sm:items-end space-x-2 sm:space-x-0 sm:space-y-2 w-full sm:w-auto">
                           <span
-                            className={`px-3 py-1 text-sm rounded-full ${
+                            className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full ${
                               c.status === "Pending"
                                 ? "bg-red-100 text-red-800"
                                 : c.status === "In Progress"
@@ -448,15 +455,15 @@ export default function AdminDashboard() {
                           >
                             {c.status || "Unknown"}
                           </span>
-                          <div className="flex space-x-2">
-                            <button className="text-blue-600 hover:text-blue-900 text-sm">
+                          <div className="flex flex-wrap gap-1 sm:gap-2">
+                            <button className="text-blue-600 hover:text-blue-900 text-xs sm:text-sm">
                               View
                             </button>
-                            <button className="text-green-600 hover:text-green-900 text-sm">
+                            <button className="text-green-600 hover:text-green-900 text-xs sm:text-sm">
                               Resolve
                             </button>
                             <button
-                              className="text-purple-600 hover:text-purple-900 text-sm"
+                              className="text-purple-600 hover:text-purple-900 text-xs sm:text-sm"
                               onClick={handleAssign}
                             >
                               Assign
@@ -931,7 +938,7 @@ export default function AdminDashboard() {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto p-6">{renderContent()}</main>
+        <main className="flex-1 overflow-auto p-4 sm:p-6">{renderContent()}</main>
       </div>
       {/* Overlay for mobile */}
       {sidebarOpen && (

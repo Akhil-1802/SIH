@@ -33,8 +33,13 @@ const ComplaintSchema = new mongoose.Schema({
     required: false // optional
   },
   photo: {
-    type: String, // storing base64 string (could also store URL if uploaded somewhere)
+    type: String, // storing base64 string or file path
     required: false
+  },
+  issue: {
+    type: String,
+    enum: ['Not Assigned', 'Assigned', 'Resolved'],
+    default: 'Not Assigned'
   },
   createdAt: {
     type: Date,
